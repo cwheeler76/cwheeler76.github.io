@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>loanDepot Copilot Demo</title>
+  <style>
+  /* Styling for Customer Main Website Picture */
+    .page {
+      text-align: center;
+      padding: 5px;
+      background: #fff;
+      margin: 0px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .page img {
+      width: 100%;
+      height: auto;
+      border-radius: 0px;
+      margin-bottom: 20px;
+    }
+
+    .page h2 {
+      color: #333;
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .page p {
+      color: #666;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+	
+	/* Styling for Chatbot Icon */
+    .chatbot-icon {
+      position: fixed;
+      bottom: -5px;
+      right: 20px;
+      cursor: pointer;
+    }
+
+    /* Styling for Chatbot Container */
+    .chatbot-container {
+      position: fixed;
+      bottom: 1px;
+      right: 0;
+      width: 400px; /* Adjust width as needed */
+      height: 500px; /* Adjust height as needed */
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      overflow: hidden;
+      display: none; /* Hidden by default */
+    }
+
+    /* Styling for Close Button */
+    .close-button {
+      position: absolute;
+      top: 12px;
+      right: 10px;
+      cursor: pointer;
+      color: #ffffff;
+      font-family: Arial, Helvetica;
+    }
+
+    /* Styling for Resize Handle */
+    .resize-handle {
+      position: absolute;
+      bottom: -5px; /* Adjust to move above the bot content */
+      right: -10px; /* Adjust to move above the bot content */
+      width: 20px;
+      height: 20px;
+      cursor: nwse-resize; /* Set cursor for resize */
+    }
+
+  </style>
+</head>
+<body>
+    <!-- Customer Main Website Picture -->
+    <div id="home" class="page">
+      <img src="https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/loanDepotWebsite.png?raw=true" class="full-width-image">  
+    </div>
+  <!-- Chatbot Icon -->
+  <div id="chatbot-icon" class="chatbot-icon">
+    <img src="https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/JackVirtualAssistantIcon.png?raw=true" alt="Chatbot Icon">
+  </div>
+
+  <!-- Chatbot Container (Hidden by default) -->
+  <div id="chatbot-container" class="chatbot-container">
+    <!-- Close Button -->
+    <span class="close-button" id="close-button">X</span>
+    <!-- Copilot Studio embed code or API integration goes here -->
+    <iframe src="https://web.powerva.microsoft.com/environments/f4a1d380-92c3-e664-9705-cb3aac81270e/bots/cr110_loanDepotBotDemo/webchat?__version__=2" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+    <!-- Resize Handle -->
+    <div class="resize-handle" id="resize-handle"></div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const chatbotIcon = document.getElementById('chatbot-icon');
+      const chatbotContainer = document.getElementById('chatbot-container');
+      const closeButton = document.getElementById('close-button');
+      const resizeHandle = document.getElementById('resize-handle');
+
+      let isResizing = false;
+      let startX, startY, startWidth, startHeight;
+
+      // Show/hide chatbot container when icon is clicked
+      chatbotIcon.addEventListener('click', function() {
+        chatbotContainer.style.display = chatbotContainer.style.display === 'block' ? 'none' : 'block';
+      });
+
+      // Close chatbot container when close button is clicked
+      closeButton.addEventListener('click', function() {
+        chatbotContainer.style.display = 'none';
+      });
+
+      // Resize chatbot container when resize handle is dragged
+      resizeHandle.addEventListener('mousedown', function(event) {
+        isResizing = true;
+        startX = event.clientX;
+        startY = event.clientY;
+        startWidth = chatbotContainer.offsetWidth;
+        startHeight = chatbotContainer.offsetHeight;
+      });
+
+      document.addEventListener('mousemove', function(event) {
+        if (!isResizing) return;
+        
+        const deltaX = event.clientX - startX;
+        const deltaY = event.clientY - startY;
+        
+        chatbotContainer.style.width = startWidth + deltaX + 'px';
+        chatbotContainer.style.height = startHeight + deltaY + 'px';
+      });
+
+      document.addEventListener('mouseup', function() {
+        isResizing = false;
+      });
+    });
+  </script>
+</body>
+</html>
