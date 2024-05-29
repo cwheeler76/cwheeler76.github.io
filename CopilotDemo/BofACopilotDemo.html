@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bank of America Copilot Demo</title>
   <style>
-  /* Styling for Customer Main Website Picture */
+    /* Styling for Customer Main Website Picture */
     .page {
       text-align: center;
       padding: 5px;
@@ -33,8 +33,8 @@
       font-size: 16px;
       line-height: 1.6;
     }
-	
-	/* Styling for Chatbot Icon */
+
+    /* Styling for Chatbot Icon */
     .chatbot-icon {
       position: fixed;
       bottom: -5px;
@@ -80,9 +80,9 @@
 </head>
 <body>
     <!-- Customer Main Website Picture -->
-    <div id="home" class="page">
-      <img src="https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/BofAWebsite.png?raw=true" class="full-width-image">  
-    </div>
+  <div id="home" class="page">
+    <img id="homepage-image" src="" class="full-width-image">  
+  </div>
   <!-- Chatbot Icon -->
   <div id="chatbot-icon" class="chatbot-icon">
     <img src="https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/JackVirtualAssistantIcon.png?raw=true" alt="Chatbot Icon">
@@ -140,6 +140,18 @@
       document.addEventListener('mouseup', function() {
         isResizing = false;
       });
+
+      // Detect browser language and set home page image accordingly
+      const browserLanguage = navigator.language || navigator.userLanguage;
+      const homeImage = document.getElementById('homepage-image');
+
+      if (browserLanguage.startsWith('es')) {
+        // Spanish
+        homeImage.src = 'https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/BofAWebsiteSpanish.png?raw=true';
+      } else {
+        // Default to English
+        homeImage.src = 'https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/BofAWebsiteEnglish.png?raw=true';
+      }
     });
   </script>
 </body>
