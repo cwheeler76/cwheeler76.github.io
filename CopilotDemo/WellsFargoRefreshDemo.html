@@ -102,7 +102,59 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      // ... existing script content ...
+     const chatbotIcon = document.getElementById('chatbot-icon');
+      const chatbotContainer = document.getElementById('chatbot-container');
+      const closeButton = document.getElementById('close-button');
+      const resizeHandle = document.getElementById('resize-handle');
+
+      let isResizing = false;
+      let startX, startY, startWidth, startHeight;
+
+      // Show/hide chatbot container when icon is clicked
+      chatbotIcon.addEventListener('click', function() {
+        chatbotContainer.style.display = chatbotContainer.style.display === 'block' ? 'none' : 'block';
+      });
+
+      // Close chatbot container when close button is clicked
+      closeButton.addEventListener('click', function() {
+        chatbotContainer.style.display = 'none';
+      });
+
+      // Resize chatbot container when resize handle is dragged
+      resizeHandle.addEventListener('mousedown', function(event) {
+        isResizing = true;
+        startX = event.clientX;
+        startY = event.clientY;
+        startWidth = chatbotContainer.offsetWidth;
+        startHeight = chatbotContainer.offsetHeight;
+      });
+
+      document.addEventListener('mousemove', function(event) {
+        if (!isResizing) return;
+        
+        const deltaX = event.clientX - startX;
+        const deltaY = event.clientY - startY;
+        
+        chatbotContainer.style.width = startWidth + deltaX + 'px';
+        chatbotContainer.style.height = startHeight + deltaY + 'px';
+      });
+
+      document.addEventListener('mouseup', function() {
+        isResizing = false;
+      });
+
+      // Detect browser language and set home page image accordingly
+      const browserLanguage = navigator.language || navigator.userLanguage;
+      const homeImage = document.getElementById('homepage-image');
+
+      if (browserLanguage.startsWith('es')) {
+        // Spanish
+        homeImage.src = 'https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/StateFarmWebsiteSpanish.png?raw=true';
+      } else {
+        // Default to English
+        homeImage.src = 'https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/StateFarmWebsiteEnglish.png?raw=true';
+      }
+    });
 
       // Add event listener for the refresh button
       const refreshButton = document.getElementById('refresh-button');
