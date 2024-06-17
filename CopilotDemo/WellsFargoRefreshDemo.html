@@ -3,21 +3,80 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wells Fargo Bank Copilot Demo</title>
+  <title>State Farm Copilot Demo</title>
   <style>
-    /* ... existing styles ... */
+    /* Styling for Customer Main Website Picture */
+    .page {
+      text-align: center;
+      padding: 5px;
+      background: #fff;
+      margin: 0px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-    /* Styling for Refresh Button */
-    .refresh-button {
+    .page img {
+      width: 100%;
+      height: auto;
+      border-radius: 0px;
+      margin-bottom: 20px;
+    }
+
+    .page h2 {
+      color: #333;
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .page p {
+      color: #666;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* Styling for Chatbot Icon */
+    .chatbot-icon {
+      position: fixed;
+      bottom: -5px;
+      right: 20px;
+      cursor: pointer;
+    }
+
+    /* Styling for Chatbot Container */
+    .chatbot-container {
+      position: fixed;
+      bottom: 1px;
+      right: 0;
+      width: 400px; /* Adjust width as needed */
+      height: 500px; /* Adjust height as needed */
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      overflow: hidden;
+      display: none; /* Hidden by default */
+    }
+
+    /* Styling for Close Button */
+    .close-button {
       position: absolute;
       top: 12px;
-      right: 30px;
+      right: 10px;
       cursor: pointer;
       color: #ffffff;
       font-family: Arial, Helvetica;
     }
+
+    /* Styling for Resize Handle */
+    .resize-handle {
+      position: absolute;
+      bottom: -5px; /* Adjust to move above the bot content */
+      right: -10px; /* Adjust to move above the bot content */
+      width: 20px;
+      height: 20px;
+      cursor: nwse-resize; /* Set cursor for resize */
+    }
+
   </style>
-</head>
 <body>
   <!-- Customer Main Website Picture -->
   <div id="home" class="page">
