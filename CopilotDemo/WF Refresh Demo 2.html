@@ -170,8 +170,8 @@
       refreshButton.addEventListener('click', function() {
         const authToken = 'Bearer Sm8G4fWgUZ4.Ds09w990zKskN2Ozy5IdvtWhu4YpIWaQ67S9zBYpyqY';
 
-        // First API call to get the conversation id
-        fetch('https://directline.botframework.com/v3/directline/tokens/generate', {
+        // First API call to get the conversation ID and token
+        fetch('https://directline.botframework.com/v3/directline/conversations', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -193,7 +193,7 @@
             body: JSON.stringify({
               type: 'event',
               from: { id: 'user1' },
-              name: 'reroute',
+              name: 'startConversation',
               value: 'Hello Parag'
             })
           })
