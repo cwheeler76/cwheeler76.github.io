@@ -216,7 +216,7 @@
               },
               body: JSON.stringify({
                 type: 'message',
-                text: 'card expand',
+                text: 'restart conversation',
                 from: { id: 'james' }
               })
             })
@@ -233,6 +233,7 @@
                 },
                 body: JSON.stringify({
                   type: 'event',
+                  from: { id: 'user1' },
                   name: 'reroute',
                   value: 'Hello Parag'
                 })
