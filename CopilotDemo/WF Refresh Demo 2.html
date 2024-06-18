@@ -181,6 +181,7 @@
         .then(response => response.json())
         .then(data => {
           const conversationId = data.conversationId;
+          console.log('Conversation ID:', conversationId);
 
           // Second API call to send an event with name startConversation and value "Hello Parag"
           fetch(`https://directline.botframework.com/v3/directline/conversations/${conversationId}/activities`, {
@@ -192,11 +193,16 @@
             body: JSON.stringify({
               type: 'event',
               from: { id: 'user1' },
-              name: 'startConversation',
+              name: 'reroute',
               value: 'Hello Parag'
             })
           })
-          .then(response => response.json())
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+          })
           .then(data => console.log('Event sent:', data))
           .catch(error => console.error('Error sending event:', error));
         })
