@@ -34,8 +34,8 @@
     /* Styling for Chatbot Container */
     .chatbot-container {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      top: 50%;
+      left: 50%;
       width: 400px; /* Adjust width as needed */
       height: 500px; /* Adjust height as needed */
       background-color: #f9f9f9;
@@ -44,6 +44,7 @@
       display: none; /* Hidden by default */
       flex-direction: column;
       overflow: hidden;
+      transform: translate(-50%, -50%);
     }
 
     /* Styling for Close and Refresh Buttons */
@@ -101,7 +102,7 @@
       // Show chatbot container when icon is clicked
       chatbotIcon.addEventListener('click', function() {
         chatbotContainer.style.display = 'flex';
-        refreshWebChat(); // Initialize Web Chat when the container is displayed
+        initializeWebChat(); // Initialize Web Chat when the container is displayed
       });
 
       // Close chatbot container when close button is clicked
@@ -149,8 +150,8 @@
         homeImage.src = 'https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/StateFarmWebsiteEnglish.png?raw=true';
       }
 
-      // Function to refresh the Web Chat
-      function refreshWebChat() {
+      // Function to initialize the Web Chat
+      function initializeWebChat() {
         const tokenEndpoint = 'https://directline.botframework.com/v3/directline/tokens/generate';
         const authToken = 'Bearer Sm8G4fWgUZ4.Ds09w990zKskN2Ozy5IdvtWhu4YpIWaQ67S9zBYpyqY';
 
@@ -173,6 +174,25 @@
             },
             document.getElementById('webchat')
           );
+        })
+        .catch(error => console.error('Error getting token:', error));
+      }
+
+      // Function to refresh the Web Chat
+      function refreshWebChat() {
+        const tokenEndpoint = 'https://directline.botframework.com/v3/directline/tokens/generate';
+        const authToken = 'Bearer Sm8G4fWgUZ4.Ds09w990zKskN2Ozy5IdvtWhu4YpIWaQ67S9zBYpyqY';
+
+        fetch(tokenEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authToken
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          const token = data.token;
 
           // Second API call to get the conversation ID using the token
           fetch('https://directline.botframework.com/v3/directline/conversations', {
