@@ -47,7 +47,7 @@
     }
 
     /* Styling for Close Button */
-    .close-button {
+    .close-button, .refresh-button {
       text-align: right;
       padding: 10px;
     }
@@ -60,16 +60,6 @@
       width: 20px;
       height: 20px;
       cursor: nwse-resize; /* Set cursor for resize */
-    }
-
-    /* Styling for Refresh Button */
-    .refresh-button {
-      position: absolute;
-      top: 12px;
-      right: 30px;
-      cursor: pointer;
-      color: #ffffff;
-      font-family: Arial, Helvetica;
     }
   </style>
 </head>
@@ -90,6 +80,10 @@
     <div class="close-button">
       <button id="close-button">Close</button>
     </div>
+    <!-- Refresh Button -->
+    <div class="refresh-button">
+      <button id="refresh-button">Refresh</button>
+    </div>
     <!-- Web Chat container -->
     <div id="webchat" style="flex: 1;"></div>
     <!-- Resize Handle -->
@@ -101,6 +95,7 @@
       const chatbotIcon = document.getElementById('chatbot-icon');
       const chatbotContainer = document.getElementById('chatbot-container');
       const closeButton = document.getElementById('close-button');
+      const refreshButton = document.getElementById('refresh-button');
       const resizeHandle = document.getElementById('resize-handle');
 
       let isResizing = false;
@@ -115,6 +110,11 @@
       // Close chatbot container when close button is clicked
       closeButton.addEventListener('click', function() {
         chatbotContainer.style.display = 'none';
+      });
+
+      // Refresh Web Chat when refresh button is clicked
+      refreshButton.addEventListener('click', function() {
+        refreshWebChat(); // Refresh Web Chat when the refresh button is clicked
       });
 
       // Resize chatbot container when resize handle is dragged
