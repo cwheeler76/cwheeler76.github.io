@@ -112,10 +112,11 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const chatbotIcon = document.getElementById('chatbot-icon');
+      const chatbotIcon = document.getElementById('chatbot-icon');
       const chatbotContainer = document.getElementById('chatbot-container');
       const closeButton = document.getElementById('close-button');
       const resizeHandle = document.getElementById('resize-handle');
+      const refreshButton = document.getElementById('refresh-button');
 
       let isResizing = false;
       let startX, startY, startWidth, startHeight;
@@ -164,10 +165,8 @@
         // Default to English
         homeImage.src = 'https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/StateFarmWebsiteEnglish.png?raw=true';
       }
-    });
 
       // Add event listener for the refresh button
-      const refreshButton = document.getElementById('refresh-button');
       refreshButton.addEventListener('click', function() {
         const authToken = 'Bearer Sm8G4fWgUZ4.Ds09w990zKskN2Ozy5IdvtWhu4YpIWaQ67S9zBYpyqY';
 
