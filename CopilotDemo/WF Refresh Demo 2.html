@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wells Fargo Bank Copilot Demo</title>
+  <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+  <script type="text/javascript" src="https://alcdn.msauth.net/lib/1.2.0/js/msal.js"></script>
+  <script src="https://unpkg.com/@azure/storage-blob@10.3.0/browser/azure-storage.blob.min.js"
+    integrity="sha384-fsfhtLyVQo3L3Bh73qgQoRR328xEeXnRGdoi53kjo1uectCfAHFfavrBBN2Nkbdf"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    if (typeof Msal === 'undefined') document.write(unescape("%3Cscript src='https://alcdn.msftauth.net/lib/1.2.0/js/msal.js' type='text/javascript' %3E%3C/script%3E"));
+  </script>
+
   <style>
     /* Styling for Customer Main Website Picture */
     .page {
@@ -13,6 +22,14 @@
       margin: 0px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #webchat {
+      position: fixed;
+      height: calc(100% - 50px);
+      width: 100%;
+      top: 50px;
+      overflow: hidden;
     }
 
     .page img {
@@ -104,8 +121,8 @@
     <span class="close-button" id="close-button">X</span>
     <!-- Refresh Button -->
     <span class="refresh-button" id="refresh-button">↻</span>
-    <!-- Copilot Studio embed code or API integration goes here -->
-    <iframe src="https://web.powerva.microsoft.com/environments/f4a1d380-92c3-e664-9705-cb3aac81270e/bots/cr110_wellsFargoBankDemoBot/webchat?__version__=2" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+    <!-- Web Chat container -->
+    <div id="webchat"></div>
     <!-- Resize Handle -->
     <div class="resize-handle" id="resize-handle"></div>
   </div>
@@ -166,12 +183,12 @@
         homeImage.src = 'https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/StateFarmWebsiteEnglish.png?raw=true';
       }
 
-      // Add event listener for the refresh button
-      refreshButton.addEventListener('click', function() {
+      // Function to refresh the Web Chat
+      function refreshWebChat() {
+        const tokenEndpoint = 'https://directline.botframework.com/v3/directline/tokens/generate';
         const authToken = 'Bearer Sm8G4fWgUZ4.Ds09w990zKskN2Ozy5IdvtWhu4YpIWaQ67S9zBYpyqY';
 
-        // First API call to get a token
-        fetch('https://directline.botframework.com/v3/directline/tokens/generate', {
+        fetch(tokenEndpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -182,64 +199,21 @@
         .then(data => {
           const token = data.token;
 
-          // Second API call to get the conversation ID using the token
-          fetch('https://directline.botframework.com/v3/directline/conversations', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            }
-          })
-          .then(response => response.json())
-          .then(data => {
-            const conversationId = data.conversationId;
-            console.log('Conversation ID:', conversationId);
-
-            // Third API call to send a message
-            fetch(`https://directline.botframework.com/v3/directline/conversations/${conversationId}/activities`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-              },
-              body: JSON.stringify({
-                type: 'message',
-                text: 'restart conversation',
-                from: { id: 'james' }
-              })
-            })
-            .then(response => response.json())
-            .then(data => {
-              console.log('Message sent:', data);
-
-              // Fourth API call to send an event with name startConversation and value "Hello Parag"
-              fetch(`https://directline.botframework.com/v3/directline/conversations/${conversationId}/activities`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                  type: 'event',
-                  from: { id: 'user1' },
-                  name: 'reroute',
-                  value: 'Hello Parag'
-                })
-              })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-              })
-              .then(data => console.log('Event sent:', data))
-              .catch(error => console.error('Error sending event:', error));
-            })
-            .catch(error => console.error('Error sending message:', error));
-          })
-          .catch(error => console.error('Error getting conversation ID:', error));
+          window.WebChat.renderWebChat(
+            {
+              directLine: window.WebChat.createDirectLine({ token }),
+              userID: 'unique_user_id', // Replace with your unique user ID logic if needed
+              styleOptions: {} // Optional styling options
+            },
+            document.getElementById('webchat')
+          );
         })
-        .catch(error => console.error('Error getting token:', error));
+        .catch(error => console.error('Error refreshing Web Chat:', error));
+      }
+
+      // Add event listener for the refresh button
+      refreshButton.addEventListener('click', function() {
+        refreshWebChat();
       });
     });
   </script>
