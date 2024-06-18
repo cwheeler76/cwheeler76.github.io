@@ -95,6 +95,8 @@
       const closeButton = document.getElementById('close-button');
       const refreshButton = document.getElementById('refresh-button');
       const resizeHandle = document.getElementById('resize-handle');
+      let conversationId;
+      let token;
 
       let isResizing = false;
       let startX, startY, startWidth, startHeight;
@@ -164,7 +166,7 @@
         })
         .then(response => response.json())
         .then(data => {
-          const token = data.token;
+          token = data.token;
 
           // Initialize the chat
           window.WebChat.renderWebChat(
@@ -174,27 +176,8 @@
             },
             document.getElementById('webchat')
           );
-        })
-        .catch(error => console.error('Error getting token:', error));
-      }
 
-      // Function to refresh the Web Chat
-      function refreshWebChat() {
-        const tokenEndpoint = 'https://directline.botframework.com/v3/directline/tokens/generate';
-        const authToken = 'Bearer Sm8G4fWgUZ4.Ds09w990zKskN2Ozy5IdvtWhu4YpIWaQ67S9zBYpyqY';
-
-        fetch(tokenEndpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': authToken
-          }
-        })
-        .then(response => response.json())
-        .then(data => {
-          const token = data.token;
-
-          // Second API call to get the conversation ID using the token
+          // Store the conversation ID
           fetch('https://directline.botframework.com/v3/directline/conversations', {
             method: 'POST',
             headers: {
@@ -204,54 +187,62 @@
           })
           .then(response => response.json())
           .then(data => {
-            const conversationId = data.conversationId;
-            console.log('Conversation ID:', conversationId);
-
-            // Third API call to send a message
-            fetch(`https://directline.botframework.com/v3/directline/conversations/${conversationId}/activities`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-              },
-              body: JSON.stringify({
-                type: 'message',
-                text: 'restart conversation',
-                from: { id: 'james' }
-              })
-            })
-            .then(response => response.json())
-            .then(data => {
-              console.log('Message sent:', data);
-
-              // Fourth API call to send an event with name startConversation and value "Hello Parag"
-              fetch(`https://directline.botframework.com/v3/directline/conversations/${conversationId}/activities`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                  type: 'event',
-                  from: { id: 'user1' },
-                  name: 'reroute',
-                  value: 'Hello Parag'
-                })
-              })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-              })
-              .then(data => console.log('Event sent:', data))
-              .catch(error => console.error('Error sending event:', error));
-            })
-            .catch(error => console.error('Error sending message:', error));
+            conversationId = data.conversationId;
+            console.log('Initial Conversation ID:', conversationId);
           })
-          .catch(error => console.error('Error getting conversation ID:', error));
+          .catch(error => console.error('Error getting initial conversation ID:', error));
         })
         .catch(error => console.error('Error getting token:', error));
+      }
+
+      // Function to refresh the Web Chat
+      function refreshWebChat() {
+        if (!token || !conversationId) {
+          console.error('Token or Conversation ID is missing.');
+          return;
+        }
+
+        // Third API call to send a message
+        fetch(`https://directline.botframework.com/v3/directline/conversations/${conversationId}/activities`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            type: 'message',
+            text: 'restart conversation',
+            from: { id: 'james' }
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Message sent:', data);
+
+          // Fourth API call to send an event with name startConversation and value "Hello Parag"
+          fetch(`https://directline.botframework.com/v3/directline/conversations/${conversationId}/activities`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              type: 'event',
+              from: { id: 'user1' },
+              name: 'reroute',
+              value: 'Hello Parag'
+            })
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+          })
+          .then(data => console.log('Event sent:', data))
+          .catch(error => console.error('Error sending event:', error));
+        })
+        .catch(error => console.error('Error sending message:', error));
       }
     });
   </script>
