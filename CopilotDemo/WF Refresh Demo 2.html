@@ -207,7 +207,7 @@
             const conversationId = data.conversationId;
             console.log('Conversation ID:', conversationId);
 
-            /* // Third API call to send a message
+            // Third API call to send a message
             fetch(`https://directline.botframework.com/v3/directline/conversations/${conversationId}/activities`, {
               method: 'POST',
               headers: {
@@ -222,7 +222,7 @@
             })
             .then(response => response.json())
             .then(data => {
-              console.log('Message sent:', data);*/
+              console.log('Message sent:', data);
 
               // Fourth API call to send an event with name startConversation and value "Hello Parag"
               fetch(`https://directline.botframework.com/v3/directline/conversations/${conversationId}/activities`, {
