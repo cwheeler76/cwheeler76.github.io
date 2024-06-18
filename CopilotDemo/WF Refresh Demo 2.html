@@ -37,7 +37,7 @@
       top: 50%;
       left: 50%;
       width: 400px; /* Adjust width as needed */
-      height: 500px; /* Adjust height as needed */
+      height: 600px; /* Adjust height as needed */
       background-color: #f9f9f9;
       border: 1px solid #ccc;
       border-radius: 5px;
@@ -45,12 +45,29 @@
       flex-direction: column;
       overflow: hidden;
       transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Styling for the Chat Messages Area */
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto; /* Enable vertical scrolling */
+      padding: 10px;
+      border-top: 1px solid #ccc;
+    }
+
+    /* Styling for Message */
+    .message {
+      margin-bottom: 10px;
     }
 
     /* Styling for Close and Refresh Buttons */
     .button-container {
       text-align: right;
       padding: 10px;
+      background-color: #f1f1f1;
+      border-top: 1px solid #ccc;
     }
 
     /* Styling for Resize Handle */
@@ -82,8 +99,10 @@
       <button id="close-button">Close</button>
       <button id="refresh-button">Refresh</button>
     </div>
-    <!-- Web Chat container -->
-    <div id="webchat" style="flex: 1;"></div>
+    <!-- Chat Messages Area -->
+    <div id="webchat" class="chat-messages">
+      <!-- Web Chat will be rendered here -->
+    </div>
     <!-- Resize Handle -->
     <div class="resize-handle" id="resize-handle"></div>
   </div>
@@ -218,31 +237,6 @@
         .then(response => response.json())
         .then(data => {
           console.log('Message sent:', data);
-
-          /*
-          // Fourth API call to send an event with name startConversation and value "Hello Parag"
-          fetch(`https://directline.botframework.com/v3/directline/conversations/${conversationId}/activities`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-              type: 'event',
-              from: { id: 'user1' },
-              name: 'reroute',
-              value: 'Hello Parag'
-            })
-          })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json();
-          })
-          .then(data => console.log('Event sent:', data))
-          .catch(error => console.error('Error sending event:', error));
-          */
         })
         .catch(error => console.error('Error sending message:', error));
       }
