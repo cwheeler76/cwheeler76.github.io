@@ -219,6 +219,7 @@
         .then(data => {
           console.log('Message sent:', data);
 
+          /*
           // Fourth API call to send an event with name startConversation and value "Hello Parag"
           fetch(`https://directline.botframework.com/v3/directline/conversations/${conversationId}/activities`, {
             method: 'POST',
@@ -241,6 +242,7 @@
           })
           .then(data => console.log('Event sent:', data))
           .catch(error => console.error('Error sending event:', error));
+          */
         })
         .catch(error => console.error('Error sending message:', error));
       }
