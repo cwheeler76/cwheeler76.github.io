@@ -5,14 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wells Fargo Bank Copilot Demo</title>
   <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
-  <script type="text/javascript" src="https://alcdn.msauth.net/lib/1.2.0/js/msal.js"></script>
-  <script src="https://unpkg.com/@azure/storage-blob@10.3.0/browser/azure-storage.blob.min.js"
-    integrity="sha384-fsfhtLyVQo3L3Bh73qgQoRR328xEeXnRGdoi53kjo1uectCfAHFfavrBBN2Nkbdf"
-    crossorigin="anonymous"></script>
-  <script type="text/javascript">
-    if (typeof Msal === 'undefined') document.write(unescape("%3Cscript src='https://alcdn.msftauth.net/lib/1.2.0/js/msal.js' type='text/javascript' %3E%3C/script%3E"));
-  </script>
-
   <style>
     /* Styling for Customer Main Website Picture */
     .page {
@@ -24,14 +16,6 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
-    #webchat {
-      position: fixed;
-      height: calc(100% - 50px);
-      width: 100%;
-      top: 50px;
-      overflow: hidden;
-    }
-
     .page img {
       width: 100%;
       height: auto;
@@ -39,22 +23,10 @@
       margin-bottom: 20px;
     }
 
-    .page h2 {
-      color: #333;
-      font-size: 24px;
-      margin-bottom: 15px;
-    }
-
-    .page p {
-      color: #666;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
     /* Styling for Chatbot Icon */
     .chatbot-icon {
       position: fixed;
-      bottom: -5px;
+      bottom: 20px;
       right: 20px;
       cursor: pointer;
     }
@@ -62,32 +34,29 @@
     /* Styling for Chatbot Container */
     .chatbot-container {
       position: fixed;
-      bottom: 1px;
-      right: 0;
+      bottom: 20px;
+      right: 20px;
       width: 400px; /* Adjust width as needed */
       height: 500px; /* Adjust height as needed */
       background-color: #f9f9f9;
       border: 1px solid #ccc;
       border-radius: 5px;
-      overflow: hidden;
       display: none; /* Hidden by default */
+      flex-direction: column;
+      overflow: hidden;
     }
 
     /* Styling for Close Button */
     .close-button {
-      position: absolute;
-      top: 12px;
-      right: 10px;
-      cursor: pointer;
-      color: #ffffff;
-      font-family: Arial, Helvetica;
+      text-align: right;
+      padding: 10px;
     }
 
     /* Styling for Resize Handle */
     .resize-handle {
       position: absolute;
-      bottom: -5px; /* Adjust to move above the bot content */
-      right: -10px; /* Adjust to move above the bot content */
+      bottom: 0;
+      right: 0;
       width: 20px;
       height: 20px;
       cursor: nwse-resize; /* Set cursor for resize */
@@ -118,11 +87,11 @@
   <!-- Chatbot Container (Hidden by default) -->
   <div id="chatbot-container" class="chatbot-container">
     <!-- Close Button -->
-    <span class="close-button" id="close-button">X</span>
-    <!-- Refresh Button -->
-    <span class="refresh-button" id="refresh-button">↻</span>
+    <div class="close-button">
+      <button id="close-button">Close</button>
+    </div>
     <!-- Web Chat container -->
-    <div id="webchat"></div>
+    <div id="webchat" style="flex: 1;"></div>
     <!-- Resize Handle -->
     <div class="resize-handle" id="resize-handle"></div>
   </div>
@@ -133,14 +102,14 @@
       const chatbotContainer = document.getElementById('chatbot-container');
       const closeButton = document.getElementById('close-button');
       const resizeHandle = document.getElementById('resize-handle');
-      const refreshButton = document.getElementById('refresh-button');
 
       let isResizing = false;
       let startX, startY, startWidth, startHeight;
 
-      // Show/hide chatbot container when icon is clicked
+      // Show chatbot container when icon is clicked
       chatbotIcon.addEventListener('click', function() {
-        chatbotContainer.style.display = chatbotContainer.style.display === 'block' ? 'none' : 'block';
+        chatbotContainer.style.display = 'flex';
+        refreshWebChat(); // Initialize Web Chat when the container is displayed
       });
 
       // Close chatbot container when close button is clicked
@@ -202,19 +171,13 @@
           window.WebChat.renderWebChat(
             {
               directLine: window.WebChat.createDirectLine({ token }),
-              userID: 'unique_user_id', // Replace with your unique user ID logic if needed
-              styleOptions: {} // Optional styling options
+              userID: 'unique_user_id' // Replace with your unique user ID logic if needed
             },
             document.getElementById('webchat')
           );
         })
         .catch(error => console.error('Error refreshing Web Chat:', error));
       }
-
-      // Add event listener for the refresh button
-      refreshButton.addEventListener('click', function() {
-        refreshWebChat();
-      });
     });
   </script>
 </body>
