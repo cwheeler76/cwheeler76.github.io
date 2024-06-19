@@ -116,6 +116,7 @@
       const resizeHandle = document.getElementById('resize-handle');
       let conversationId;
       let token;
+      let webchatInstance;
 
       let isResizing = false;
       let startX, startY, startWidth, startHeight;
@@ -187,8 +188,14 @@
         .then(data => {
           token = data.token;
 
+          // Remove previous instance if it exists
+          if (webchatInstance) {
+            webchatInstance.directLine.end();
+            document.getElementById('webchat').innerHTML = '';
+          }
+
           // Initialize the chat
-          window.WebChat.renderWebChat(
+          webchatInstance = window.WebChat.renderWebChat(
             {
               directLine: window.WebChat.createDirectLine({ token }),
               userID: 'unique_user_id' // Replace with your unique user ID logic if needed
