@@ -114,9 +114,8 @@
       const closeButton = document.getElementById('close-button');
       const refreshButton = document.getElementById('refresh-button');
       const resizeHandle = document.getElementById('resize-handle');
-      let conversationId;
-      let token;
       let webchatInstance;
+      let directLine;
 
       let isResizing = false;
       let startX, startY, startWidth, startHeight;
@@ -186,37 +185,28 @@
         })
         .then(response => response.json())
         .then(data => {
-          token = data.token;
+          const token = data.token;
 
-          // Remove previous instance if it exists
+          // End the previous DirectLine connection if it exists
+          if (directLine) {
+            directLine.end();
+          }
+
+          // Initialize new DirectLine connection
+          directLine = window.WebChat.createDirectLine({ token });
+
+          // Initialize the chat
           if (webchatInstance) {
-            webchatInstance.directLine.end();
             document.getElementById('webchat').innerHTML = '';
           }
 
-          // Initialize the chat
           webchatInstance = window.WebChat.renderWebChat(
             {
-              directLine: window.WebChat.createDirectLine({ token }),
+              directLine: directLine,
               userID: 'unique_user_id' // Replace with your unique user ID logic if needed
             },
             document.getElementById('webchat')
           );
-
-          // Store the conversation ID
-          fetch('https://directline.botframework.com/v3/directline/conversations', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            }
-          })
-          .then(response => response.json())
-          .then(data => {
-            conversationId = data.conversationId;
-            console.log('Initial Conversation ID:', conversationId);
-          })
-          .catch(error => console.error('Error getting initial conversation ID:', error));
         })
         .catch(error => console.error('Error getting token:', error));
       }
