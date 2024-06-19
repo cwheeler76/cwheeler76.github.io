@@ -114,7 +114,6 @@
       const closeButton = document.getElementById('close-button');
       const refreshButton = document.getElementById('refresh-button');
       const resizeHandle = document.getElementById('resize-handle');
-      let webchatInstance;
       let directLine;
 
       let isResizing = false;
@@ -195,17 +194,17 @@
           // Initialize new DirectLine connection
           directLine = window.WebChat.createDirectLine({ token });
 
-          // Initialize the chat
-          if (webchatInstance) {
-            document.getElementById('webchat').innerHTML = '';
-          }
+          // Clear previous Web Chat instance if it exists
+          const webchatContainer = document.getElementById('webchat');
+          webchatContainer.innerHTML = '';
 
-          webchatInstance = window.WebChat.renderWebChat(
+          // Initialize the chat
+          window.WebChat.renderWebChat(
             {
               directLine: directLine,
               userID: 'unique_user_id' // Replace with your unique user ID logic if needed
             },
-            document.getElementById('webchat')
+            webchatContainer
           );
         })
         .catch(error => console.error('Error getting token:', error));
