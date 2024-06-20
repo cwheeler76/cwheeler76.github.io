@@ -130,7 +130,7 @@
 
       // Refresh Web Chat when refresh button is clicked
       refreshButton.addEventListener('click', function() {
-        location.reload(); // Reload the entire page when the refresh button is clicked
+        initializeWebChat(); // Reinitialize Web Chat when the refresh button is clicked
       });
 
       // Resize chatbot container when resize handle is dragged
@@ -183,6 +183,11 @@
         .then(response => response.json())
         .then(data => {
           const token = data.token;
+
+          // End the previous DirectLine connection if it exists
+          if (directLine) {
+            directLine.end();
+          }
 
           // Initialize new DirectLine connection
           directLine = window.WebChat.createDirectLine({ token });
