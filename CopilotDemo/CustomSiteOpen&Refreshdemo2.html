@@ -132,7 +132,7 @@
 
       // Refresh Web Chat when refresh button is clicked
       refreshButton.addEventListener('click', function() {
-        reinitializeWebChat(); // Reinitialize Web Chat when the refresh button is clicked
+        location.reload(); // Reload the entire page when the refresh button is clicked
       });
 
       // Resize chatbot container when resize handle is dragged
@@ -203,13 +203,6 @@
           );
         })
         .catch(error => console.error('Error getting token:', error));
-      }
-
-      // Function to reinitialize the Web Chat
-      function reinitializeWebChat() {
-        const webchatContainer = document.getElementById('webchat');
-        webchatContainer.innerHTML = ''; // Clear the existing chat
-        initializeWebChat(); // Reinitialize with a new token
       }
     });
   </script>
