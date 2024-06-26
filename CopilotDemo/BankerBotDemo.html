@@ -49,11 +49,18 @@
       right: 0;
       width: 400px; /* Adjust width as needed */
       height: 500px; /* Adjust height as needed */
-      background-color: #8B0000; /* Dark red background */
+      background-color: #f9f9f9; /* Light background */
       border: 1px solid #ccc;
       border-radius: 5px;
       overflow: hidden;
       display: none; /* Hidden by default */
+    }
+
+    /* Styling for Close Button Container */
+    .close-button-container {
+      background-color: #8B0000; /* Dark red background */
+      position: relative;
+      height: 40px; /* Adjust height as needed */
     }
 
     /* Styling for Close Button */
@@ -90,10 +97,13 @@
 
   <!-- Chatbot Container (Hidden by default) -->
   <div id="chatbot-container" class="chatbot-container">
-    <!-- Close Button -->
-    <span class="close-button" id="close-button">X</span>
+    <!-- Close Button Container -->
+    <div class="close-button-container">
+      <!-- Close Button -->
+      <span class="close-button" id="close-button">X</span>
+    </div>
     <!-- Copilot Studio embed code or API integration goes here -->
-    <iframe src="https://web.powerva.microsoft.com/environments/f4a1d380-92c3-e664-9705-cb3aac81270e/bots/cr110_wellsFargoBankDemoBot/webchat?__version__=2" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+    <iframe src="https://web.powerva.microsoft.com/environments/f4a1d380-92c3-e664-9705-cb3aac81270e/bots/cr110_wellsFargoBankDemoBot/webchat?__version__=2" frameborder="0" style="width: 100%; height: calc(100% - 40px);"></iframe>
     <!-- Resize Handle -->
     <div class="resize-handle" id="resize-handle"></div>
   </div>
