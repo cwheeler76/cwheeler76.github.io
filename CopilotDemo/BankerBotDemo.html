@@ -66,9 +66,10 @@
       font-family: Arial, Helvetica;
       padding: 0 10px;
       height: 40px;
-      position: relative;
-      top: 0; /* Adjust position */
+      position: absolute;
+      top: 0; /* Position at the top */
       width: 100%;
+      z-index: 1; /* Ensure it is above other elements */
     }
 
     .close-button-container .title {
@@ -93,8 +94,10 @@
 
     iframe {
       width: 100%;
-      height: calc(100% - 40px); /* Adjust to not overlap with header */
+      height: 100%; /* Full height */
       border: none;
+      position: relative;
+      top: 40px; /* Push down to avoid overlap */
     }
 
   </style>
