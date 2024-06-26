@@ -67,7 +67,7 @@
       padding: 0 10px;
       height: 40px;
       position: absolute;
-      top: 0; /* Position at the top */
+      top: -40px; /* Overlap the top part */
       width: 100%;
       z-index: 1; /* Ensure it is above other elements */
     }
@@ -94,10 +94,8 @@
 
     iframe {
       width: 100%;
-      height: 100%; /* Full height */
+      height: calc(100% - 40px); /* Adjust height to exclude the header */
       border: none;
-      position: relative;
-      top: 40px; /* Push down to avoid overlap */
     }
 
   </style>
