@@ -64,11 +64,12 @@
       background-color: #8B0000; /* Dark red background */
       color: #ffffff;
       font-family: Arial, Helvetica;
-      padding: 0 10px;
-      height: 40px;
+      padding: 12px 8px; /* Adjust padding to increase height */
+      height: 60px; /* Increased height */
       position: absolute;
-      top: 0; /* Align with the top of chatbot-container */
-      width: 100%;
+      top: -20px; /* Move up to overlap header */
+      width: calc(100% + 20px); /* Increase width to overlap */
+      left: -10px; /* Move left to cover the left padding */
       z-index: 2; /* Ensure it is above other elements */
     }
 
@@ -80,6 +81,8 @@
       cursor: pointer;
       font-size: 20px;
       line-height: 40px;
+      position: relative;
+      left: -8px; /* Adjust left position to move the button */
     }
 
     /* Styling for Resize Handle */
@@ -94,7 +97,7 @@
 
     iframe {
       width: 100%;
-      height: calc(100% - 40px); /* Adjust height to exclude the header */
+      height: calc(100% - 60px); /* Adjust height to exclude the header */
       border: none;
     }
 
