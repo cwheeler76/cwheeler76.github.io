@@ -155,33 +155,6 @@
         homeImage.src = 'https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/PNCWebsiteEnglish.png?raw=true';
       }
     });
-
-        // Add event listener for the refresh button
-    const refreshButton = document.getElementById('refresh-button');
-    refreshButton.addEventListener('click', function() {
-      // Make a POST call to the REST endpoint to restart the conversation
-      fetch('https://directline.botframework.com/v3/directline/conversations/AXUaYj8DqY85xsuGRcQF1B-us/activities', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // 'Authorization': 'Bearer YOUR_DIRECT_LINE_SECRET' // Uncomment and replace with your token if needed
-        },
-        body: JSON.stringify({
-          type: 'event',
-          from: { id: 'user1' },
-          name: 'restart_convo'
-        })
-      })
-      .then(response => response.json())
-      .then(data => console.log('Conversation restarted:', data))
-      .catch(error => console.error('Error restarting conversation:', error));
-    });
-
-    // Style for Refresh Button
-    const styleSheet = document.createElement('style');
-    styleSheet.type = 'text/css';
-    styleSheet.innerText = '.refresh-button { position: absolute; top: 12px; right: 30px; cursor: pointer; color: #ffffff; font-family: Arial, Helvetica; }';
-    document.head.appendChild(styleSheet);
   </script>
 </body>
 </html>
