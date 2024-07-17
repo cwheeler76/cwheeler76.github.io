@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wells Fargo Bank Copilot Demo</title>
+  <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+  <style>
+    /* Styling for Customer Main Website Picture */
+    .page {
+      text-align: center;
+      padding: 5px;
+      background: #fff;
+      margin: 0px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .page img {
+      width: 100%;
+      height: auto;
+      border-radius: 0px;
+      margin-bottom: 20px;
+    }
+
+    /* Styling for Chatbot Icon */
+    .chatbot-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      cursor: pointer;
+    }
+
+    /* Styling for Chatbot Container */
+    .chatbot-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 400px; /* Adjust width as needed */
+      height: 600px; /* Adjust height as needed */
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      display: none; /* Hidden by default */
+      flex-direction: column;
+      overflow: hidden;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Styling for the Chat Messages Area */
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto; /* Enable vertical scrolling */
+      padding: 10px;
+      border-top: 1px solid #ccc;
+    }
+
+    /* Styling for Message */
+    .message {
+      margin-bottom: 10px;
+    }
+
+    /* Styling for Close and Refresh Buttons */
+    .button-container {
+      text-align: right;
+      padding: 10px;
+      background-color: #f1f1f1;
+      border-top: 1px solid #ccc;
+    }
+
+    /* Styling for Resize Handle */
+    .resize-handle {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 20px;
+      height: 20px;
+      cursor: nwse-resize; /* Set cursor for resize */
+    }
+  </style>
+</head>
+<body>
+  <!-- Customer Main Website Picture -->
+  <div id="home" class="page">
+    <img id="homepage-image" src="">  
+  </div>
+
+  <!-- Chatbot Icon -->
+  <div id="chatbot-icon" class="chatbot-icon">
+    <img src="https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/JackVirtualAssistantIcon.png?raw=true" alt="Chatbot Icon">
+  </div>
+
+  <!-- Chatbot Container (Hidden by default) -->
+  <div id="chatbot-container" class="chatbot-container">
+    <!-- Button Container -->
+    <div class="button-container">
+      <button id="close-button">Close</button>
+      <button id="refresh-button">Refresh</button>
+    </div>
+    <!-- Chat Messages Area -->
+    <div id="webchat" class="chat-messages">
+      <!-- Web Chat will be rendered here -->
+    </div>
+    <!-- Resize Handle -->
+    <div class="resize-handle" id="resize-handle"></div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const chatbotIcon = document.getElementById('chatbot-icon');
+      const chatbotContainer = document.getElementById('chatbot-container');
+      const closeButton = document.getElementById('close-button');
+      const refreshButton = document.getElementById('refresh-button');
+      const resizeHandle = document.getElementById('resize-handle');
+      let conversationId;
+      let token;
+
+      let isResizing = false;
+      let startX, startY, startWidth, startHeight;
+
+      // Show chatbot container when icon is clicked
+      chatbotIcon.addEventListener('click', function() {
+        chatbotContainer.style.display = 'flex';
+        initializeWebChat(); // Initialize Web Chat when the container is displayed
+      });
+
+      // Close chatbot container when close button is clicked
+      closeButton.addEventListener('click', function() {
+        chatbotContainer.style.display = 'none';
+      });
+
+      // Refresh Web Chat when refresh button is clicked
+      refreshButton.addEventListener('click', function() {
+        refreshWebChat(); // Refresh Web Chat when the refresh button is clicked
+      });
+
+      // Resize chatbot container when resize handle is dragged
+      resizeHandle.addEventListener('mousedown', function(event) {
+        isResizing = true;
+        startX = event.clientX;
+        startY = event.clientY;
+        startWidth = chatbotContainer.offsetWidth;
+        startHeight = chatbotContainer.offsetHeight;
+      });
+
+      document.addEventListener('mousemove', function(event) {
+        if (!isResizing) return;
+        
+        const deltaX = event.clientX - startX;
+        const deltaY = event.clientY - startY;
+        
+        chatbotContainer.style.width = startWidth + deltaX + 'px';
+        chatbotContainer.style.height = startHeight + deltaY + 'px';
+      });
+
+      document.addEventListener('mouseup', function() {
+        isResizing = false;
+      });
+
+      // Detect browser language and set home page image accordingly
+      const browserLanguage = navigator.language || navigator.userLanguage;
+      const homeImage = document.getElementById('homepage-image');
+
+      if (browserLanguage.startsWith('es')) {
+        // Spanish
+        homeImage.src = 'https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/StateFarmWebsiteSpanish.png?raw=true';
+      } else {
+        // Default to English
+        homeImage.src = 'https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/StateFarmWebsiteEnglish.png?raw=true';
+      }
+
+      // Function to initialize the Web Chat
+      function initializeWebChat() {
+        const tokenEndpoint = 'https://directline.botframework.com/v3/directline/tokens/generate';
+        const authToken = 'Bearer 56sBavNZq20.iIBmR1HrSru_56BV69TBDvt5OA-kzgKlapjuZEVrnfs';
+
+        fetch(tokenEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authToken
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          token = data.token;
+
+          // Initialize the chat
+          window.WebChat.renderWebChat(
+            {
+              directLine: window.WebChat.createDirectLine({ token }),
+              userID: 'unique_user_id' // Replace with your unique user ID logic if needed
+            },
+            document.getElementById('webchat')
+          );
+
+          // Store the conversation ID
+          fetch('https://directline.botframework.com/v3/directline/conversations', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            conversationId = data.conversationId;
+            console.log('Initial Conversation ID:', conversationId);
+          })
+          .catch(error => console.error('Error getting initial conversation ID:', error));
+        })
+        .catch(error => console.error('Error getting token:', error));
+      }
+
+      // Function to refresh the Web Chat
+      function refreshWebChat() {
+        if (!token || !conversationId) {
+          console.error('Token or Conversation ID is missing.');
+          return;
+        }
+
+        // Third API call to send a message
+        fetch(`https://directline.botframework.com/v3/directline/conversations/${conversationId}/activities`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            type: 'message',
+            text: 'new chat',
+            from: { id: 'james' }
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Message sent:', data);
+        })
+        .catch(error => console.error('Error sending message:', error));
+      }
+    });
+  </script>
+</body>
+</html>
