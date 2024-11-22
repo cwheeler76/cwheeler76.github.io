@@ -184,8 +184,8 @@ async function fetchJSON(url, options = {}) {
      (function (){
        var msalConfig = {
 	   auth: {
-	     clientId: '6ea6181a-7209-4a15-b25b-e44cdbaed080',
-	     authority: 'https://login.microsoftonline.com/d5f618ff-2951-4904-8f7e-999c2dd97ab2'
+	     clientId: 'ed764054-b369-4e04-8ed1-b0327f43c61f',
+	     authority: 'https://login.microsoftonline.com/0e6adff1-e58b-4ebe-8070-d1593de6f506'
 	   },
 	   cache: {
 	     cacheLocation: 'localStorage',
@@ -200,9 +200,7 @@ async function fetchJSON(url, options = {}) {
 (async function main() {
 
     // Add your BOT ID below 
-    var theURL = "https://474de6ece771ebd49179e9150e0ffe.18.environment.api.powerplatform.com/powervirtualagents/botsbyschema/crbd3_travelPromotionAgent/directline/token?api-version=2022-03-01-preview" // you can find the token URL via the mobile app channel configuration
-   
- 
+    var theURL = "https://923e87320113e1919e5ccaf14def4b.02.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr437_ssoAuthDemo/directline/token?api-version=2022-03-01-preview" // you can find the token URL via the mobile app channel configuration
 
 	var userId = clientApplication.account?.accountIdentifier != null ? 
 					("You-customized-prefix" + clientApplication.account.accountIdentifier).substr(0, 64) 
